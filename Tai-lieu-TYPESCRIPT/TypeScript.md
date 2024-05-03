@@ -117,4 +117,134 @@
       throw Error(errorMessage)
     }
     ```
-  
+
+### 9. TS Function Type: 
+- Có một cú pháp cụ thể cho các tham số function và giá trị return.
+#### 9.1. Return Type: 
+- Loại giá trị được function trả về có thể được xác định rõ ràng.
+- Nếu ko có kiểu trả về được xác định, TS sẽ cố suy ra nó thông qua các kiểu biến hoặc biểu thức được trả về.
+- Ví dụ: 
+    ```ts
+    const sum = (a: number, b: number):number=>{
+      return a+b;
+    };
+    ```
+#### 9.2. Void return type:
+- Type ***void*** có thể được sử dụng để chỉ ra function không trả về bất kì giá trị nào
+- Ví dụ: 
+    ```ts
+    const printHello = ():void=>{
+      console.log("Hello!");
+    };
+    ```
+### 10. TS Rest Parameters:
+- Rest parameter có các rules sau: 
+  - 1 function chỉ có 1 tham số duy nhất rest parameter.
+  - phải là tham số cuối cùng trong danh sách tham số.
+  - phải sử dụng với array type.
+- Syntax: 
+    ```ts
+    function fn(...rest: type[]){
+      // code block
+    }
+    ```
+- Ví dụ: 
+    ```ts
+    const multiply = (n: number, ...m: number[])=>{
+      return m.map(x)=> n * x;
+    }
+    const test = multiply(15,1,2,3,4)
+    console.log("check test: ",test);
+    // return 15,30,45,60.
+    ```
+### 11. Ts Classes:
+- Class (properties & methods) được nhập bằng cách sử dụng các chú thích type, tương tự như các biến.
+- Syntax: 
+    ```ts 
+    class Persons{
+      ssn: string;
+      firstName: string;
+      lastName: string;
+    }
+    constructor(ssn: string, firstName: string, lastName: string){
+      this.ssn = ssn;
+      this.firstName = firstName;
+      this.lastName = lastName;
+    }
+
+    getFullName():string{
+      return `${this.firstName} ${this.lastName}`
+    }
+
+    const person = new Persons("456", "Thanh Hào", "Phan")
+    console.log("check person: ", person.getFullName())
+    // return: check person Thanh Hào Phan
+    ```
+   
+#### 11.1. Access modifiers:
+- Các phần tử trong class cũng được cung cấp các sửa đổi đặc biệt ảnh hưởng đến khả năng hiển thị.
+- Có 3 công cụ sửa đổi mức độ hiển thị chính trong TS:
+  - ***```public```***: (default) cho phép truy cập các phần tử trong class từ mọi nơi.
+  - ***```private```***: chỉ cho phép truy cập các phần tử trong class từ bên trong class.
+  - ***```protecte```***: cho phép truy cập các phần tử trong class từ chính nó và bất kỳ class kế thừa nó. Class cha có thể truy cập class con, class con ko thể truy cập class cha.
+
+- Ví dụ: 
+    ```ts 
+    class Persons{
+      public firstName: string;
+      private lastName: string;
+      constructor(firstName: string, lastName: string){
+        this.firstName = firstName;
+        this.lastName = lastName;
+      }
+    }
+    const person = new Persons("adf","jfd");
+    person.firstName = "Hào";
+    person.lastName = "Phan";// Error không thể truy cập vì đã để chế độ private.
+    ```
+#### 11.2. TS Readonly: 
+- Chỉ đọc không Modify(update/delete)
+- Ví dụ: 
+    ```ts
+    class Persons{
+      readonly birthDate: Date;
+      constructor(birthDate: Date){
+        this.birthDate = birthDate;
+      }
+    }
+    let person = new Person(new Date(2000,10,04))
+    person.birthDate = new Date(2001, 10, 04); // Compile error
+    ```
+#### 11.3. TS Getter và Setter:
+- Với kiểu dữ liệu private không thể truy cập t có thể sử dụng getter và setter để xử lý điều đó.
+- Ví dụ: 
+    ```ts
+    class Persons{
+      private _age: number;
+      public firstName: string;
+      public lastName: string;
+      
+      constructor(_age: string, firstName: string, lastName: string){
+        this._age = _age;
+        this.firstName = firstName;
+        this.lastName = lastName;
+      }
+
+      get getAge(){
+        return this._age
+      }
+
+      set setAge(age:number){
+        if(age <0 || age> 150){
+          throw Error("Error age")
+        }
+        this._age = age
+      }
+    }
+    let person = new Person(45, "Hào", "Phan")
+    let checkAge = person.getAge()  // getter để lấy tuổi return 45
+    person.setAge(25)  // setter thay đổi tuổi 
+    console.log(person) // return {25, Hào, Phan}
+    ```   
+
+
